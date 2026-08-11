@@ -25,13 +25,21 @@ public class AuthController {
             @RequestHeader("Authorization") String authorization,
             @RequestBody SetPasswordRequest request) {
 
-        boolean success = authService.setPassword(authorization, request);
+        String accessToken = authService.setPassword(
+                authorization,
+                request);
+
+        if (accessToken == null) {
+            return new LoginResponse(
+                    false,
+                    false,
+                    null);
+        }
 
         return new LoginResponse(
-                success,
+                true,
                 false,
-                null);
-
+                accessToken);
     }
 
 }
