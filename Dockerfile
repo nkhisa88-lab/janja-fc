@@ -1,4 +1,4 @@
-# Stage 1: Build the application using Maven and JDK 25
+# Stage 1: Build the application using Maven and JDK 21
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Create a lightweight runtime image using JDK 25
+# Stage 2: Create a lightweight runtime image using JDK 21
 FROM eclipse-temurin:21-jre-noble
 
 WORKDIR /app
