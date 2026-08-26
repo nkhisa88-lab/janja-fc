@@ -1,5 +1,5 @@
 # Stage 1: Build the application using Maven and JDK 25
-FROM maven:3.9.9-eclipse-temurin-25 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
