@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create a lightweight runtime image using JDK 25
-FROM eclipse-temurin:25-jre-noble
+FROM eclipse-temurin:21-jre-noble
 
 WORKDIR /app
 
