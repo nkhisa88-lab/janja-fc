@@ -92,22 +92,26 @@ public class AuthService {
 
     }
 
-    public boolean setPassword(
+    public String setPassword(
             String authorization,
             SetPasswordRequest request) {
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            return false;
+            return null;
+        }
+
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return null;
         }
 
         String token = authorization.substring(7);
 
         if (!jwtService.isValid(token)) {
-            return false;
+            return null;
         }
 
         if (jwtService.extractTokenType(token) != TokenType.ACTIVATION) {
-            return false;
+            return null;
         }
 
         String phoneNumber = jwtService.extractPhoneNumber(token);
@@ -115,17 +119,19 @@ public class AuthService {
         User user = userRepository.findByPhoneNumber(phoneNumber);
 
         if (user == null) {
-            return false;
+            return null;
         }
 
-        String passwordHash = passwordEncoder.encode(request.getPassword());
+        String passwordHash = passwordEncoder.encode(
+                request.getPassword());
 
         userRepository.activateUser(
                 user.getPhoneNumber(),
                 passwordHash);
 
-        return true;
-
+        // Generate a normal access token after
+        // successfully setting the password.
+        return jwtService.generateAccessToken(user);
     }
 
 }

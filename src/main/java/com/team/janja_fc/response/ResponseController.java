@@ -23,7 +23,7 @@ public class ResponseController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','PLAYER')")
     @GetMapping("/attendance/{matchId}")
     public AttendanceResponse attendance(
             @PathVariable Long matchId) {
